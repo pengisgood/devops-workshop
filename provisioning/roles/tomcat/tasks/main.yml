@@ -1,0 +1,18 @@
+---
+- name: Add group "tomcat"
+  group: name=tomcat
+  sudo: yes
+
+- name: Add user "tomcat"
+  user: name=tomcat group=tomcat createhome=no
+  sudo: yes
+
+- name: install tomcat
+  unarchive: src=apache-tomcat-7.0.54.zip dest=/opt owner=tomcat group=tomcat
+
+- name: initialize tomcat
+  copy: src=tomcat.sh  dest=/etc/init.d/tomcat mode=0755
+
+- name: start tomcat
+  service: name=tomcat state=started enabled=yes
+  sudo: yes

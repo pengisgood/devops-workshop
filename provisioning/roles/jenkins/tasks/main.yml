@@ -1,0 +1,32 @@
+---
+- name: Add group "jenkins"
+  group: name=jenkins
+  sudo: yes
+
+- name: Add user "jenkins"
+  user: name=jenkins group=jenkins home=/home/jenkins createhome=yes
+  sudo: yes
+
+- name: install jenkins
+  copy: src=jenkins.war dest=/opt mode=644
+
+- name: initialize jenkins
+  copy: src=jenkins.sh  dest=/etc/init.d/jenkins mode=0755
+
+- name: start jenkins
+  service: name=jenkins state=started enabled=yes
+  sudo: yes
+
+- name: Wait untils Jenkins web API is available
+  shell: curl --head --silent http://localhost:8080/cli/
+  register: result
+  until: result.stdout.find("200 OK") != -1
+  retries: 12
+  delay: 5
+
+- name: copy jenkins plugins
+  unarchive: src=plugins.zip dest=/home/jenkins/.jenkins
+
+- name: restart jenkins
+  service: name=jenkins state=restarted enabled=yes
+  sudo: yes

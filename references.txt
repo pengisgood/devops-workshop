@@ -1,0 +1,11 @@
+有时间可以先浏览一下文档:
+
+vagrant:
+https://docs.vagrantup.com/v2/getting-started/index.html
+
+ansible:
+http://docs.ansible.com/ansible/intro.html
+http://docs.ansible.com/ansible/playbooks_best_practices.html
+
+中文版（有些过时）
+http://www.178linux.com/doc/ansible/
